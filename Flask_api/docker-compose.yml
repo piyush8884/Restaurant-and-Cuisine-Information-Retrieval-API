@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: Zomato_SQL
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.flask
+    container_name: flask_app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      MYSQL_HOST: db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_DB: Zomato_SQL
+    volumes:
+      - ./Zomato_final_dockers.csv:/app/Zomato_final_dockers.csv
+      - ./load_data.py:/app/load_data.py
+    entrypoint: >
+      /bin/sh -c "
+      sleep 30 &&
+      python /app/load_data.py &&
+      flask run --host=0.0.0.0 --port=8080"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
