@@ -17,10 +17,12 @@ Docker Compose
 
 # Use 
 git clone https://github.com/piyush8884/Restaurant-and-Cuisine-Information-Retrieval-API.git
-cd Flask_API
+
+# cd Flask_API
 
 # To Run using Docker File
-docker-compose up --build 
+
+# docker-compose up --build 
 
 
 ![image](https://github.com/user-attachments/assets/02f8f28f-ba90-4e0c-b53c-330c86f60051)
